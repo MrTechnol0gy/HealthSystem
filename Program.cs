@@ -19,7 +19,8 @@ namespace HealthSystem
         static int playerlevel;
         static int levelboost;
         static bool gameover;
-        static string currentweapon;
+        static string currentweapon;'
+        static bool testmode;
 
         const int healthmax = 999;
         const int healthmin = -1;
@@ -65,7 +66,7 @@ namespace HealthSystem
 
         static void PlayerChoice()
         {
-            Console.WriteLine("Press 'F' to shoot, 'T' to switch weapons, 'H' to attempt to heal, or 'Y' to enter TESTMODE");
+            Console.WriteLine("Press 'F' to shoot, 'T' to switch weapons, 'H' to attempt to heal, or 'Y' to toggle TESTMODE");
             if (Console.ReadKey().Key == ConsoleKey.H)
             {
                 Console.WriteLine();
@@ -87,7 +88,7 @@ namespace HealthSystem
             else if (Console.ReadKey().Key == ConsoleKey.Y)
             {
                 Console.WriteLine();
-                Console.WriteLine("Now entering TESTMODE");
+                Console.WriteLine("Toggling TESTMODE");
                 TestMode();
             }
         }
@@ -188,6 +189,7 @@ namespace HealthSystem
             enemyxpvalue = 25;
             currentweapon = "Pistol";
             gameover = false;
+            testmode = false;
         }
         static void DeathCheck()
         { 
@@ -261,14 +263,18 @@ namespace HealthSystem
         }
         static void TestMode()
         {
-            bool TestModeCheck = true;
-            Console.WriteLine("Welcome to TESTMODE");
-
-            while (TestModeCheck == true)
+            if (testmode == false)
             {
-
+            testmode = true;
+            Console.WriteLine("Welcome to TESTMODE");
+            }
+            else
+            {
+                testmode = false;
+                Console.WriteLine("You are now leaving TESTMODE")
             }
 
+            
         }
     }
 }
