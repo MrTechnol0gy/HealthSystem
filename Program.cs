@@ -22,8 +22,11 @@ namespace HealthSystem
         static string currentweapon;
 
         const int healthmax = 999;
+        const int healthmin = -1;
         const int shieldmax = 50;
+        const int shieldmin = -1;
         const int livesmax = 99;
+        const int livesmin = -1;
 
 
         static void Main(string[] args)
@@ -62,7 +65,7 @@ namespace HealthSystem
 
         static void PlayerChoice()
         {
-            Console.WriteLine("Press 'F' to shoot, 'T' to switch weapons, or 'H' to attempt to heal");
+            Console.WriteLine("Press 'F' to shoot, 'T' to switch weapons, 'H' to attempt to heal, or 'Y' to enter TESTMODE");
             if (Console.ReadKey().Key == ConsoleKey.H)
             {
                 Console.WriteLine();
@@ -81,6 +84,12 @@ namespace HealthSystem
                 Console.WriteLine("You squeeze off a shot!");
                 PlayerShoot();
             }
+            else if (Console.ReadKey().Key == ConsoleKey.Y)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Now entering TESTMODE");
+                TestMode();
+            }
         }
         static void TakeDamage()
         {
@@ -89,7 +98,7 @@ namespace HealthSystem
 
             Console.WriteLine();
             Console.WriteLine("You're about to take " + enemydamage + " damage!");
-            SpillOver();
+            SpillOver(enemydamage);
         }
         static void ShieldRegen() //regens shields and keeps them from going past maximum (complete)
         {
@@ -182,7 +191,7 @@ namespace HealthSystem
         }
         static void DeathCheck()
         { 
-        if (health == 0)
+        if (health <= 0)
             {
                 lives--;
                 health = 150;
@@ -228,8 +237,37 @@ namespace HealthSystem
                 Console.WriteLine("You gained " + enemyxpvalue + " experience!");
             }
         }
-        static void SpillOver()
+        static void SpillOver(int enemydamage)
         {
+            int spillovercheck;
+            int healthspill;
+            spillovercheck = enemydamage;
+
+            if (shield >= spillovercheck)
+            {
+                shield = shield - spillovercheck;
+                Console.WriteLine("Shields took " + spillovercheck + " damage!");
+            }
+            else if (shield < spillovercheck)
+            {
+                shield = shield - spillovercheck;
+                healthspill = shield;
+                Console.WriteLine("Your shields are gone!");
+                shield = 0;
+                Console.WriteLine("You're about to lose " + healthspill + " health!");
+                health = health + healthspill;
+                Console.WriteLine();
+            }
+        }
+        static void TestMode()
+        {
+            bool TestModeCheck = true;
+            Console.WriteLine("Welcome to TESTMODE");
+
+            while (TestModeCheck == true)
+            {
+
+            }
 
         }
     }
