@@ -44,7 +44,8 @@ namespace HealthSystem
                     DeathCheck();
                     LivesCheck();                
                     Console.WriteLine();
-                    Thread.Sleep(3000);
+                    Console.ReadKey();
+                    //Thread.Sleep(3000);
                     Console.Clear();
                 }                                
                 TakeDamage();
@@ -363,7 +364,7 @@ namespace HealthSystem
         }
         static void BaseStats() //initializes starting variables. can also be used to reset game to default parameters.
         {
-            health = 150 + (levelboost * 2);
+            health = 146 + (levelboost * 2);
             shield = 50;
             lives = 3;
             enemydamage = 0;
@@ -383,8 +384,11 @@ namespace HealthSystem
         { 
         if (health <= 0)
             {
+                Console.WriteLine();
+                Console.WriteLine("Player is using a 1UP.");
+                Console.WriteLine();
                 lives--;
-                health = 150 + (levelboost * 2);
+                health = 146 + (levelboost * 2);
                 shield = 50;
             }
         }
@@ -438,11 +442,12 @@ namespace HealthSystem
             }
             else
             {
-                while (experience >= (playerlevel * levelboost) + 100)
+                if (experience >= ((playerlevel * levelboost) + 100)) //DEBUG This returns way too many levels and I don't know why
                 {
                     Console.WriteLine();
                     Console.WriteLine("Congratulations, you've gained a level!");
                     playerlevel++;
+                    LevelUpCheck();
                 }
             }
         }
@@ -456,6 +461,7 @@ namespace HealthSystem
             {
                 shield = shield - spillovercheck;
                 Console.WriteLine("Shields took " + spillovercheck + " damage!");
+                HealthString();
             }
             else if (shield < spillovercheck)
             {
@@ -465,6 +471,7 @@ namespace HealthSystem
                 shield = 0;
                 Console.WriteLine("You're about to lose " + healthspill + " health!");
                 health = health + healthspill;
+                HealthString();
                 Console.WriteLine();
             }
         }
@@ -484,6 +491,33 @@ namespace HealthSystem
                 Console.WriteLine();
                 Console.WriteLine("You are now leaving TESTMODE");
             }            
+        }
+        static void HealthString()
+        {
+            if (health >= 100)
+            {
+                Console.WriteLine("You're in peak condition!");
+            }
+            else if (health >= 80 && health < 100)
+            {
+                Console.WriteLine("Barely a scratch!");
+            }
+            else if (health >= 60 && health < 80)
+            {
+                Console.WriteLine("A bit of a flesh wound there, huh.");
+            }
+            else if (health >= 40 && health < 60)
+            {
+                Console.WriteLine("Hope you've got some bandages in that health pack.");
+            }
+            else if (health >= 20 && health < 40)
+            {
+                Console.WriteLine("Should I notify your next of kin now or...");
+            }
+            else if (health >= 1 && health < 20)
+            {
+                Console.WriteLine("That's not gonna buff out.");
+            }
         }
     }
 }
