@@ -51,7 +51,7 @@ namespace HealthSystem
                 TakeDamage();
                 DeathCheck();
                 LivesCheck();
-                ShieldRegen();                
+                RegenerateShield();                
                 Console.WriteLine();
                 Thread.Sleep(3000);
                 Console.Clear();
@@ -83,7 +83,7 @@ namespace HealthSystem
                 {
                     Console.WriteLine();
                     Console.WriteLine("You attempt to heal!");
-                    PlayerHeal();
+                    Heal();
                 }
                 else if (Console.ReadKey().Key == ConsoleKey.T)
                 {
@@ -142,7 +142,7 @@ namespace HealthSystem
                     int playerinput = Convert.ToInt32(Console.ReadLine());
                     if (playerinput > healthmax)
                     {
-                        Console.WriteLine("You are trying to apply an amount of healing that is not possible, please try again.");
+                        Console.WriteLine("You are trying to apply an amount of healing that is too high, please try again.");
                         Thread.Sleep(3000);
                         Console.Clear();
                         ShowHud();
@@ -150,7 +150,7 @@ namespace HealthSystem
                     }
                     else if (playerinput < healthmin)
                     {
-                        Console.WriteLine("You are trying to apply an amount of healing that is not possible, please try again.");
+                        Console.WriteLine("You are trying to apply an amount of healing that is a negative number, please try again.");
                         Thread.Sleep(3000);
                         Console.Clear();
                         ShowHud();
@@ -159,25 +159,30 @@ namespace HealthSystem
                     else
                     {
                         Console.WriteLine("You are about to apply " + playerinput + " health.");
-                        PlayerHealTest(playerinput);
+                        HealTest(playerinput);
                     }
                 }
                 else if (Console.ReadKey().Key == ConsoleKey.S)
                 {
                     Console.WriteLine();
                     Console.WriteLine("Please enter how many shields you would like the player to receive.");
-                    int playerinput = Convert.ToInt32(Console.ReadLine());
+                    int playerinput = Convert.ToInt32(Console.ReadLine());                    
                     if (playerinput > shieldmax)
                     {
-                        Console.WriteLine("You are trying to apply an amount of shields that are not possible, please try again.");
+                        Console.WriteLine("You are trying to apply an amount of shields that are too high, please try again.");
                         Thread.Sleep(3000);
                         Console.Clear();
                         ShowHud();
                         PlayerChoice();
                     }
+                    //   the sam hell is going on with the error in the statement below. above my paygrade.
+                    //else if (playerinput > ((playerinput + shield) > shieldmax)) 
+                    //{
+
+                    //}
                     else if (playerinput < shieldmin)
                     {
-                        Console.WriteLine("You are trying to apply an amount of shields that are not possible, please try again.");
+                        Console.WriteLine("You are trying to apply an amount of shields that are negative, please try again.");
                         Thread.Sleep(3000);
                         Console.Clear();
                         ShowHud();
@@ -186,7 +191,7 @@ namespace HealthSystem
                     else
                     {
                         Console.WriteLine("You are about to apply " + playerinput + " shields.");
-                        ShieldRegenTest(playerinput);
+                        RegenerateShieldTest(playerinput);
                     }
                 }
                 else if (Console.ReadKey().Key == ConsoleKey.L)
@@ -196,7 +201,7 @@ namespace HealthSystem
                     int playerinput = Convert.ToInt32(Console.ReadLine());
                     if (playerinput > livesmax)
                     {
-                        Console.WriteLine("You are trying to apply an amount of lives that are not possible, please try again.");
+                        Console.WriteLine("You are trying to apply an amount of lives that are above the maximum, please try again.");
                         Thread.Sleep(3000);
                         Console.Clear();
                         ShowHud();
@@ -263,7 +268,7 @@ namespace HealthSystem
             Console.WriteLine();
             SpillOver(testdamage);
         }
-        static void ShieldRegen() //regens shields and keeps them from going past maximum (complete)
+        static void RegenerateShield() //regens shields and keeps them from going past maximum
         {
             if (shield != shieldmax && shield < 45)
             {
@@ -283,7 +288,7 @@ namespace HealthSystem
             }
 
         }
-        static void ShieldRegenTest(int playerinput)
+        static void RegenerateShieldTest(int playerinput)
         {
             int testshieldregen = playerinput;
             if (shield != shieldmax && shield < 45)
@@ -301,7 +306,7 @@ namespace HealthSystem
                 Console.WriteLine("Shields are at full!");
             }
         }
-        static void PlayerHeal()
+        static void Heal()
         {
             Random rnd = new Random();
             int heal = rnd.Next(0, 6);
@@ -326,7 +331,7 @@ namespace HealthSystem
                 health = health + healamount;
             }
         }
-        static void PlayerHealTest(int playerinput)
+        static void HealTest(int playerinput)
         {
             int playerheal = playerinput;
             Console.WriteLine("You're about to heal for " + playerheal + ".");
@@ -364,7 +369,6 @@ namespace HealthSystem
         }
         static void BaseStats() //initializes starting variables. can also be used to reset game to default parameters.
         {
-            health = 146 + (levelboost * 2);
             shield = 50;
             lives = 3;
             enemydamage = 0;
@@ -372,6 +376,7 @@ namespace HealthSystem
             experience = 0;
             playerlevel = 1;
             levelboost = playerlevel * 2;
+            health = 146 + (levelboost * 2);
             enemyxpvalue = 25;
             currentweapon = "Pistol";
             gameover = false;
