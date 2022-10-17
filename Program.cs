@@ -33,6 +33,8 @@ namespace HealthSystem
         {
             BaseStats(); //method to initialize all variables to base levels
 
+            Debug();
+
             while (gameover == false && testmode == false)
             {
                 ShowHud();
@@ -265,8 +267,27 @@ namespace HealthSystem
         {
             int testdamage = playerinput;
 
-            Console.WriteLine();
-            SpillOver(testdamage);
+            if (testdamage > healthmax)
+            {
+                Console.WriteLine();
+                Console.WriteLine("You are about to apply " + testdamage + " damage.");
+                Console.WriteLine("The amount of damage is higher than the maximum of " + healthmax + ".");
+                Console.WriteLine();
+            }
+            else if (testdamage < healthmin)
+            {
+                Console.WriteLine();
+                Console.WriteLine("You are about to apply " + testdamage + " damage.");
+                Console.WriteLine("The amount of damage is lower than the minimum of " + healthmin + ".");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("You are about to apply " + testdamage + " damage.");
+                Console.WriteLine();
+                SpillOver(testdamage);
+            }
         }
         static void RegenerateShield() //regens shields and keeps them from going past maximum
         {
@@ -523,6 +544,19 @@ namespace HealthSystem
             {
                 Console.WriteLine("That's not gonna buff out.");
             }
+        }
+        static void Debug()
+        {
+            ShowHud();
+            Console.WriteLine("Modifies shield.");
+            TakeDamageTest(50);
+            ShowHud();
+            BaseStats();
+            TakeDamageTest(-50);
+            ShowHud();
+            TakeDamageTest(9999);
+            ShowHud();
+            Console.WriteLine();
         }
     }
 }
